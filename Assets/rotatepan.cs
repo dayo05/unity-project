@@ -14,8 +14,8 @@ public class rotatepan : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         float width=Screen.width/2;
         float height=Screen.height/2;
-        a=90 * (mousePos.y-height) / height;
-        r=90 * (-mousePos.x+width) / width;
-        transform.eulerAngles = new Vector3(a, 0, r);
+        r=90 * (mousePos.y-height) / height;
+        a=90 * (-mousePos.x+width) / width;
+        transform.eulerAngles = new Vector3(r, 0, a);
     }
 }

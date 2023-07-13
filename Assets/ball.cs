@@ -6,9 +6,11 @@ public class ball : MonoBehaviour
 {
     public float speed = 5f;
     private Rigidbody characterRigidbody;
+    public GameObject Bomb;
  
     void Start(){
         characterRigidbody = GetComponent<Rigidbody>();
+        Debug.Log(characterRigidbody.gameObject.transform.position);
     }
  
     void Update(){
@@ -21,10 +23,12 @@ public class ball : MonoBehaviour
             characterRigidbody.velocity=new Vector3(0,0,0);
         }
     }
-    private void OnCollisionEnter(Collision bomb) {
+    void OnCollisionEnter(Collision bomb) {
         if(bomb.collider.gameObject.CompareTag("bomb")){
-            Debug.Log("yes");
-            characterRigidbody.AddForce(new Vector3(10, 10, 10), ForceMode.Impulse); // dir : 날리고싶은 방향
+            Vector3 force = transform.position - Bomb.transform.position + new Vector3(0, 0.5f, 0);
+            force = Vector3.Normalize(force);
+            Debug.Log(force);
+            characterRigidbody.AddForce(force * 20, ForceMode.Impulse); // dir : 날리고싶은 방향
         }
     }
 }
