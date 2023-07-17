@@ -33,6 +33,7 @@ public class bomb : MonoBehaviour
         color = material.color;
         Pos = transform.position;
         gameObject.tag = "bomb";
+        Return_RandomPosition();
     }
 
     // Update is called once per frame
@@ -53,16 +54,8 @@ public class bomb : MonoBehaviour
         if (!collision.collider.gameObject.CompareTag("Sphere")) return;
         material.color = new Color32(250, 2, 2, 255);
         theaudio.PlayOneShot(ExplodeSound);
-        Invoke(nameof(explode), 0.25f);
-    }
-
-    private void explode()
-    {
-        Instantiate(Explosion, myTransform.position, Quaternion.identity);
-        material.color = color;
-        Pos = Return_RandomPosition();
-        Instantiate(Bomb, Pos, Quaternion.identity);
-        Destroy(gameObject);
+        //Invoke(nameof(explode), 0.25f);
+        throw new NotImplementedException("You must use coroutine and implement delaied explosion");
     }
 
     Vector3 Return_RandomPosition()
