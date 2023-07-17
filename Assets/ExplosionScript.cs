@@ -16,8 +16,7 @@ public class ExplosionScript : MonoBehaviour
     {
         Timer+=Time.deltaTime;
         if(Timer>1.0f){
-            Destroy(gameObject); 
-            Debug.Log("Destroyed"); 
+            Destroy(gameObject);
         }
     }
 }

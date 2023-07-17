@@ -1,0 +1,6 @@
+System.Threading.ThreadAbortException: Thread was being aborted.
+  at (wrapper managed-to-native) System.IO.Ports.SerialPortStream.get_bytes_in_buffer(int,int)
+  at System.IO.Ports.SerialPortStream.get_BytesToRead () [0x00000] in <195f08a2c18a4688aeb7dc8a1ee0fa64>:0 
+  at System.IO.Ports.SerialPort.get_BytesToRead () [0x00006] in <195f08a2c18a4688aeb7dc8a1ee0fa64>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.Ports.SerialPort.get_BytesToRead()
+  at SerialIO.<Start>b__3_0 () [0x0004e] in /Users/parkjunhyoung/My project (1)/Assets/SerialIO.cs:46 

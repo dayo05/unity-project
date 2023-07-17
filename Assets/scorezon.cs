@@ -6,12 +6,10 @@ using UnityEngine.UI;
 public class scorezon : MonoBehaviour
 {
     public GameObject zone;
-    public GameObject parent;
-    public Text myScore;
-    private GameObject S;
-    private int s;
-    private GameObject ra;
+    private ManagerCS manager;
     private Vector3 stat;
+
+    private Vector3 pos;
     
     public SerialIO serialIO;
     private float GetPitch => serialIO.latest.pitch;
@@ -19,17 +17,17 @@ public class scorezon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        myScore=GameObject.Find("score").GetComponent<Text>();
-        S=GameObject.Find("score");
-        ra=GameObject.Find("rotating");
-        Vector3 g=Return_RandomPosition();
-        zone.transform.position=g;
+        serialIO = SerialIO.Obtain();
+        manager=GameObject.Find("Manager").GetComponent<ManagerCS>();
+        pos = transform.position;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        transform.eulerAngles = new Vector3(-1 * GetPitch, 0, GetYaw);
+        transform.position = Rotate_Ang(-1*GetPitch*Mathf.PI/180, GetYaw*Mathf.PI/180,
+            new Vector3(pos.x,0,pos.z));
+        transform.eulerAngles = new Vector3(GetYaw, 0, -1*GetPitch);
     }
     
     private void Awake()
@@ -46,32 +44,29 @@ public class scorezon : MonoBehaviour
         float rangeZ = Random.Range( -6.5f,6.5f);
         Vector3 RandomPostion = new Vector3(rangeX, 0,rangeZ);
         stat = RandomPostion;
-        Vector3 respawnPosition = Rotate_Ang(); //rothang()
+        if(serialIO == null) Debug.LogError("STAT IS NULL");
+        Vector3 respawnPosition = Rotate_Ang(-1*GetPitch*Mathf.PI/180, GetYaw*Mathf.PI/180,stat); //rothang()
         return respawnPosition;
     }
-    private void OnCollisionEnter(Collision collision){
-        if(collision.collider.gameObject.CompareTag("Sphere")){
-            Instantiate(zone,Return_RandomPosition(),Quaternion.identity).transform.parent=parent.transform;
-            S.GetComponent<score>().Score+=1;
-            printScore();
-            Destroy(zone);
-        }
-    }
-    private void printScore(){
-        myScore.text=S.GetComponent<score>().Score.ToString();
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.collider.gameObject.CompareTag("Sphere")) return;
+        transform.position = Return_RandomPosition();
+        pos = transform.position;
+        manager.printScore();
     }
 
     //public SerialIO serialIO;
     //private double GetPitch => serialIO.latest.pitch;
     //private double GetYaw => serialIO.latest.yaw;
-    private Vector3 Rotate_Ang(){
-        float ca=Mathf.Cos(GetPitch);
-        float cr=Mathf.Cos(GetYaw);
-        float sa=Mathf.Sin(GetPitch);
-        float sr=Mathf.Sin(GetYaw);
-        float x = ca*stat.x - sa*cr*stat.y + sa*sr*stat.z;
-        float y = sa*stat.x + ca*cr*stat.y - sr*ca*stat.z;
-        float z = sr*stat.y + cr*stat.z;
+    private Vector3 Rotate_Ang(float Pitch, float Yaw,Vector3 pos){
+        float ca=Mathf.Cos(Pitch);
+        float cr=Mathf.Cos(Yaw);
+        float sa=Mathf.Sin(Pitch);
+        float sr=Mathf.Sin(Yaw);
+        float x = ca*pos.x - sa*cr*pos.y + sa*sr*pos.z;
+        float y = sa*pos.x + ca*cr*pos.y - sr*ca*pos.z;
+        float z = sr*pos.y + cr*pos.z;
         return new Vector3(x,y,z);
     }
 }

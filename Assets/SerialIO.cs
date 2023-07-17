@@ -15,6 +15,10 @@ public class SerialData
 }
 public class SerialIO : MonoBehaviour
 {
+    public static SerialIO Obtain()
+    {
+        return GameObject.Find("SerialIO").GetComponent<SerialIO>();
+    }
     private ConcurrentStack<SerialData> cStack = new();
 
     public string SerialData;
@@ -38,8 +42,10 @@ public class SerialIO : MonoBehaviour
             while (true)
             {
                 if (!serialIO.IsOpen)
+                {
                     serialIO.Open();
-
+                }
+                    
                 if (serialIO.BytesToRead == 0) continue;
                 var s = serialIO.ReadExisting();
                 sb.Append(s);

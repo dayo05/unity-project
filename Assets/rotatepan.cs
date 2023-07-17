@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
 public class rotatepan : MonoBehaviour
 {
     public float a=0;
@@ -15,7 +16,7 @@ public class rotatepan : MonoBehaviour
     private float GetYaw => serialIO.latest.yaw;
     private void Start()
     {
-        serialIO = GameObject.Find("SerialIO").GetComponent<SerialIO>();
+        serialIO = SerialIO.Obtain();
         rig = GetComponent<Rigidbody>();
     }
 
@@ -25,8 +26,8 @@ public class rotatepan : MonoBehaviour
         float height=Screen.height/2;
         r=90 * (mousePos.y-height) / height;
         a=90 * (-mousePos.x+width) / width;
-        //rig.MoveRotation(Quaternion.Euler(new Vector3(-1*GetYaw, 0, GetPitch)));
-        rig.MoveRotation(Quaternion.Euler(new Vector3(r,0,a)));
+        rig.MoveRotation(Quaternion.Euler(new Vector3(GetYaw, 0, -1*GetPitch)));
+        //rig.MoveRotation(Quaternion.Euler(new Vector3(r,0,a)));
         //transform.eulerAngles = new Vector3(r, 0, a);
     }
 
