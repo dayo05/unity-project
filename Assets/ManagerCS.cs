@@ -33,10 +33,16 @@ public class ManagerCS : MonoBehaviour
     {
         return Booms.Contains(boomObject);
     }
+
+    private void ExplodeBoom(bomb target)
+    {
+        RegenBoom();
+        Destroy(target.gameObject);
+    }
     
     public bomb RegenBoom()
     {
-        var boom = GameObject.Find("Boom");
+        var boom = Instantiate(Bomb, Pos, Quaternion.identity); // Why this params required?? We'll going to rearrange the location maybe
         var bomb = boom.GetComponent<bomb>();
         Booms.Add(bomb);
         return bomb;
