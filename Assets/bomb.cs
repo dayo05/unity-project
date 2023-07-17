@@ -53,8 +53,13 @@ public class bomb : MonoBehaviour
     {
         if (!collision.collider.gameObject.CompareTag("Sphere")) return;
         material.color = new Color32(250, 2, 2, 255);
+        Explode();
+    }
+
+    private void Explode() {
         theaudio.PlayOneShot(ExplodeSound);
-        //Invoke(nameof(explode), 0.25f);
+        Instantiate(Explosion, myTransform.position, Quaternion.identity);
+        material.color = color;
         throw new NotImplementedException("You must use coroutine and implement delaied explosion");
     }
 
